@@ -24,4 +24,35 @@ public class CacheService implements ICacheService {
     public IMap<Long, Subscriber> getCache() {
         return hazelcastInstance.getMap("subscribers");
     }
+
+    @Override
+    public void updateCache(Subscriber subscriber) {
+        checkIfNotExistThrowException(subscriber.getId());
+        getCache().put(subscriber.getId(), subscriber);
+
+    }
+
+    @Override
+    public void deleteCache(Long id) {
+        checkIfNotExistThrowException(id);
+        getCache().delete(id);
+    }
+
+    @Override
+    public Subscriber getById(Long id) {
+        checkIfNotExistThrowException(id);
+        return getCache().get(id);
+
+    }
+
+    @Override
+    public void clearCache() {
+        getCache().clear();
+    }
+
+    private void checkIfNotExistThrowException(Long id) {
+        if (!getCache().containsKey(id)) {
+            throw new SubscriberNotFoundException("Subscriber Not Found");
+        }
+    }
 }

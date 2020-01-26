@@ -26,7 +26,8 @@ public class HazelcastConfiguration {
 
     @Bean
     public HazelcastInstance hazelcastInstance() {
-        return new HazelcastInstanceFactory(hazelCastConfig()).getHazelcastInstance();
+        return new HazelcastInstanceFactory(hazelCastConfig())
+                .getHazelcastInstance();
     }
 
 }

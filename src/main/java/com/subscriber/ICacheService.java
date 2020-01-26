@@ -7,4 +7,11 @@ public interface ICacheService {
 
     IMap<Long, Subscriber> getCache();
 
+    void updateCache(Subscriber subscriber);
+
+    void deleteCache(Long id);
+
+    void clearCache();
+
+    Subscriber getById(Long id);
 }
