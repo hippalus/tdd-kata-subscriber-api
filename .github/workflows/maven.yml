@@ -1,4 +1,4 @@
-name: Java CI
+name: subscriber-api-ci
 
 on: [push]
 

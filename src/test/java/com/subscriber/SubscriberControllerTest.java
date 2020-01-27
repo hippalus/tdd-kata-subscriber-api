@@ -5,8 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -18,18 +18,22 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-@WebAppConfiguration
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SubscriberControllerTest {
+
+    private static final String SUBSCRIBER_URI = "/subscriber";
+    private static final String SUBSCRIBER_NOT_FOUND = "Subscriber Not Found";
+    @LocalServerPort
+    private int port;
 
     @Autowired
     private SubscriberController subscriberController;
     @Autowired
     private FileOperationsComponent fileOperationsComponent;
-
     @Autowired
-    WebApplicationContext webApplicationContext;
-    protected MockMvc mvc;
+    private WebApplicationContext webApplicationContext;
+
+    private MockMvc mvc;
 
     @BeforeEach
     void setUp() {
@@ -46,12 +50,11 @@ public class SubscriberControllerTest {
     void should_save_subscriber_into_cache_and_return_200OK() throws Exception {
 
         //given
-        Subscriber subscriber = new Subscriber(4L, "habip", "905061623363");
-        String uri = "/subscriber";
+        Subscriber subscriber = newSubscriber();
 
         //when
         String inputJson = fileOperationsComponent.pojoToJson(subscriber);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(SUBSCRIBER_URI)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson))
                 .andReturn();
@@ -67,13 +70,12 @@ public class SubscriberControllerTest {
     void should_update_subscriber_into_cache_and_return_200OK() throws Exception {
 
         //given
-        Subscriber subscriber = new Subscriber(4L, "habip_updated", "905061623363");
+        Subscriber subscriber = newSubscriber();
         fileOperationsComponent.getCacheService().addToCache(subscriber.getId(), subscriber);
-        String uri = "/subscriber";
 
         //when
         String inputJson = fileOperationsComponent.pojoToJson(subscriber);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(SUBSCRIBER_URI)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson))
                 .andReturn();
@@ -88,12 +90,11 @@ public class SubscriberControllerTest {
     void should_throw_SubscriberNotFoundException_if_subscriber_not_exist_in_cache_when_try_to_update() throws Exception {
 
         //given
-        Subscriber subscriber = new Subscriber(4L, "habip_updated", "905061623363");
-        String uri = "/subscriber";
+        Subscriber subscriber = newSubscriber();
 
         //when
         String inputJson = fileOperationsComponent.pojoToJson(subscriber);
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(uri)
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.put(SUBSCRIBER_URI)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(inputJson))
                 .andReturn();
@@ -101,7 +102,7 @@ public class SubscriberControllerTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(404, status);
         String content = mvcResult.getResponse().getContentAsString();
-        assertEquals("Subscriber Not Found", content);
+        assertEquals(SUBSCRIBER_NOT_FOUND, content);
     }
 
 
@@ -109,9 +110,9 @@ public class SubscriberControllerTest {
     void should_delete_subscriber_from_cache_and_return_200OK() throws Exception {
 
         //given
-        Subscriber subscriber = new Subscriber(1L, "habip_deleted", "905061623363");
+        Subscriber subscriber =newSubscriber();
         fileOperationsComponent.getCacheService().addToCache(subscriber.getId(), subscriber);
-        String uri = "/subscriber/1";
+        String uri = "/subscriber/4";
 
         //when
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
@@ -135,13 +136,13 @@ public class SubscriberControllerTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(404, status);
         String content = mvcResult.getResponse().getContentAsString();
-        assertEquals("Subscriber Not Found", content);
+        assertEquals(SUBSCRIBER_NOT_FOUND, content);
     }
 
     @Test
     void should_get_all_subscribers_from_cache() throws Exception {
         //given
-        Subscriber subscriber = new Subscriber(4L, "habip", "905061623363");
+        Subscriber subscriber = newSubscriber();
         Subscriber subscriber1 = new Subscriber(6L, "murtaza", "905146546525");
         fileOperationsComponent.getCacheService().addToCache(subscriber.getId(), subscriber);
         fileOperationsComponent.getCacheService().addToCache(subscriber1.getId(), subscriber1);
@@ -178,7 +179,7 @@ public class SubscriberControllerTest {
     void should_get_subscriber_by_id_from_cache_when_call_getSubscriberById() throws Exception {
 
         //given
-        Subscriber subscriber = new Subscriber(4L, "habip", "905061623363");
+        Subscriber subscriber = newSubscriber();
         Subscriber subscriber1 = new Subscriber(6L, "murtaza", "905146546525");
         fileOperationsComponent.getCacheService().addToCache(subscriber.getId(), subscriber);
         fileOperationsComponent.getCacheService().addToCache(subscriber1.getId(), subscriber1);
@@ -218,8 +219,10 @@ public class SubscriberControllerTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(404, status);
         String content = mvcResult.getResponse().getContentAsString();
-        assertEquals("Subscriber Not Found", content);
+        assertEquals(SUBSCRIBER_NOT_FOUND, content);
 
     }
-
+    private Subscriber newSubscriber() {
+        return new Subscriber(4L, "habip", "905015488363");
+    }
 }

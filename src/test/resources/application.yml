@@ -1,7 +1,7 @@
 subscriber:
         data:
           file:
-            path: /home/hisler/Workspace/kata-subscriber-api/src/test/resources/data.json
+            path: classpath:data.json
           update:
             scheduler: 0 * * ? * *
 

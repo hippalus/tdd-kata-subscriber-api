@@ -1,6 +1,7 @@
 package com.subscriber;
 
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +18,18 @@ public class FileOperationsComponentTest {
     @Autowired
     private FileOperationsComponent fileOperationsComponent;
 
+    @BeforeEach
+    void setup(){
+        fileOperationsComponent.getCacheService().clearCache();
+    }
+
     @Test
     void should_take_the_data_file_path_value_that_it_reads_from_the_application_properties_file() {
         //when:
         String filePath = fileOperationsComponent.getFilePath();
 
         //then:
-        assertThat(filePath).isEqualTo("/home/hisler/Workspace/kata-subscriber-api/src/test/resources/data.json");
+        assertThat(filePath).isEqualTo("classpath:data.json");
     }
 
     @Test

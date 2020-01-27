@@ -7,11 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 
@@ -39,7 +38,8 @@ public class FileOperationsComponent {
     public <T> Object writeToPojo(Class<T> clazz) {
         T result = null;
         try {
-            result = objectMapper.readValue(new File(filePath), clazz);
+
+            result = objectMapper.readValue(ResourceUtils.getFile(filePath), clazz);
         } catch (IOException e) {
             log.error(String.format("Invalid File Path : %s or Invalid class : %s ", filePath, clazz));
             log.error(e.getMessage());
@@ -61,7 +61,7 @@ public class FileOperationsComponent {
     public void writeToFile() {
         SubscribersList subscribersList = new SubscribersList(new ArrayList<>(cacheService.getCache().values()));
         try {
-            Files.write(Paths.get(filePath), pojoToJson(subscribersList).getBytes());
+            Files.write(ResourceUtils.getFile(filePath).toPath(), pojoToJson(subscribersList).getBytes());
             if (log.isInfoEnabled()) {
                 log.info("The cache content written in to the file:{}", getFilePath());
             }

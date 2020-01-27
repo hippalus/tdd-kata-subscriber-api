@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.subscriber</groupId>
-    <artifactId>kata-subscriber-api</artifactId>
+    <artifactId>tdd-kata-subscriber-api</artifactId>
     <version>1.0</version>
-    <name>kata-subscriber-api</name>
+    <name>tdd-kata-subscriber-api</name>
     <description>Demo project</description>
 
     <properties>
