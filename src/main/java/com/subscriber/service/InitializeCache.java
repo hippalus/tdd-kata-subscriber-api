@@ -1,7 +1,7 @@
-package com.subscriber;
+package com.subscriber.service;
 
+import com.subscriber.model.SubscribersList;
 import org.springframework.boot.CommandLineRunner;
-
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,4 +1,4 @@
-package com.subscriber;
+package com.subscriber.service;
 
 import lombok.SneakyThrows;
 import org.assertj.core.api.Assertions;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest(classes = TestConfiguration.class)
+@SpringBootTest
 public class DefaultInitializeCacheTest {
     @Autowired
     private ICacheService cacheService;

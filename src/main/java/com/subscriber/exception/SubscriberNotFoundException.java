@@ -1,4 +1,4 @@
-package com.subscriber;
+package com.subscriber.exception;
 
 public class SubscriberNotFoundException  extends RuntimeException{
 

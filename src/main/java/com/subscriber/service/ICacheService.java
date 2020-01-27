@@ -1,6 +1,7 @@
-package com.subscriber;
+package com.subscriber.service;
 
 import com.hazelcast.core.IMap;
+import com.subscriber.model.Subscriber;
 
 public interface ICacheService {
     void addToCache(Long id, Subscriber object);

@@ -1,9 +1,14 @@
-package com.subscriber;
+package com.subscriber.controller;
 
+import com.subscriber.service.ICacheService;
+import com.subscriber.model.Subscriber;
+import com.subscriber.model.SubscribersList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+
+import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
 public class SubscriberController {
@@ -14,7 +19,7 @@ public class SubscriberController {
         this.cacheService = cacheService;
     }
 
-    @PostMapping("/subscriber")
+    @RequestMapping(value = "/subscriber",method = POST)
     public ResponseEntity<Subscriber> saveSubscriber(@RequestBody Subscriber subscriber) {
         cacheService.addToCache(subscriber.getId(), subscriber);
 
@@ -22,26 +27,27 @@ public class SubscriberController {
 
     }
 
-    @PutMapping("/subscriber")
+
+    @RequestMapping(value = "/subscriber",method = PUT)
     public ResponseEntity<Subscriber> updateSubscriber(@RequestBody Subscriber subscriber){
 
         cacheService.updateCache(subscriber);
         return ResponseEntity.ok(subscriber);
 
     }
-    @DeleteMapping("/subscriber/{id}")
+    @RequestMapping(value = "/subscriber/{id}",method = DELETE)
     public ResponseEntity<String> deleteSubscriber(@PathVariable("id") Long id){
 
         cacheService.deleteCache(id);
         return ResponseEntity.ok("Subscriber is deleted successfully");
 
     }
-    @GetMapping("/subscriber/getAllSubscribers")
+    @RequestMapping(value = "/subscriber/getAllSubscribers",method = GET)
     public ResponseEntity<SubscribersList> getAllSubscribers(){
         return ResponseEntity.ok(new SubscribersList(new ArrayList<>(cacheService.getCache().values())));
     }
-    @PostMapping("/subscriber/getSubscriberById/{id}")
-    public ResponseEntity<Subscriber> saveSubscriber(@PathVariable("id") Long id) {
+    @RequestMapping(value="/subscriber/getSubscriberById/{id}",method=POST)
+    public ResponseEntity<Subscriber> getSubscriberById(@PathVariable("id") Long id) {
         Subscriber subscriber=cacheService.getById(id);
         return ResponseEntity.ok(subscriber);
     }

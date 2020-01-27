@@ -1,4 +1,4 @@
-package com.subscriber;
+package com.subscriber.configuration;
 
 import com.hazelcast.config.Config;
 import com.hazelcast.config.EvictionPolicy;

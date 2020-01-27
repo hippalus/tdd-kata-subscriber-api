@@ -1,4 +1,4 @@
-package com.subscriber;
+package com.subscriber.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

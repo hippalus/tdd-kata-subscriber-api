@@ -1,5 +1,8 @@
-package com.subscriber;
+package com.subscriber.service;
 
+import com.subscriber.model.Subscriber;
+import com.subscriber.model.SubscribersList;
+import com.subscriber.service.FileOperationsComponent;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

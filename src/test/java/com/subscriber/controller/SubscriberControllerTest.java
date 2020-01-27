@@ -1,12 +1,16 @@
-package com.subscriber;
+package com.subscriber.controller;
 
-import org.assertj.core.api.Assertions;
+import com.subscriber.aspect.LoggingAspect;
+import com.subscriber.controller.SubscriberController;
+import com.subscriber.model.Subscriber;
+import com.subscriber.model.SubscribersList;
+import com.subscriber.service.FileOperationsComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,15 +20,15 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest
+@WebAppConfiguration
 public class SubscriberControllerTest {
 
     private static final String SUBSCRIBER_URI = "/subscriber";
     private static final String SUBSCRIBER_NOT_FOUND = "Subscriber Not Found";
-    @LocalServerPort
-    private int port;
 
     @Autowired
     private SubscriberController subscriberController;
@@ -32,6 +36,8 @@ public class SubscriberControllerTest {
     private FileOperationsComponent fileOperationsComponent;
     @Autowired
     private WebApplicationContext webApplicationContext;
+    @Autowired
+    private LoggingAspect loggingAspect;
 
     private MockMvc mvc;
 
@@ -39,11 +45,12 @@ public class SubscriberControllerTest {
     void setUp() {
         mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         fileOperationsComponent.getCacheService().clearCache();
+        loggingAspect.setAspectCalled(false);
     }
 
     @Test
     void contextLoads() {
-        Assertions.assertThat(subscriberController).isNotNull();
+        assertThat(subscriberController).isNotNull();
     }
 
     @Test
@@ -64,6 +71,8 @@ public class SubscriberControllerTest {
 
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(inputJson, content);
+
+        TestLoggingAspect();
     }
 
     @Test
@@ -84,6 +93,8 @@ public class SubscriberControllerTest {
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(inputJson, content);
+
+        TestLoggingAspect();
     }
 
     @Test
@@ -103,6 +114,8 @@ public class SubscriberControllerTest {
         assertEquals(404, status);
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(SUBSCRIBER_NOT_FOUND, content);
+
+        TestLoggingAspect();
     }
 
 
@@ -122,6 +135,8 @@ public class SubscriberControllerTest {
         assertEquals(200, status);
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals("Subscriber is deleted successfully", content);
+
+        TestLoggingAspect();
     }
 
     @Test
@@ -137,6 +152,8 @@ public class SubscriberControllerTest {
         assertEquals(404, status);
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(SUBSCRIBER_NOT_FOUND, content);
+
+        TestLoggingAspect();
     }
 
     @Test
@@ -157,6 +174,8 @@ public class SubscriberControllerTest {
         String resultJson = fileOperationsComponent.pojoToJson(new SubscribersList(Arrays.asList(subscriber, subscriber1)));
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(resultJson, content);
+
+        TestLoggingAspect();
     }
 
     @Test
@@ -173,6 +192,8 @@ public class SubscriberControllerTest {
         String content = mvcResult.getResponse().getContentAsString();
         String resultJson = fileOperationsComponent.pojoToJson(new SubscribersList(new ArrayList<>()));
         assertEquals(resultJson, content);
+
+        TestLoggingAspect();
     }
 
     @Test
@@ -206,6 +227,8 @@ public class SubscriberControllerTest {
         String content2 = mvcResult2.getResponse().getContentAsString();
         assertEquals(resultJson2, content2);
 
+        TestLoggingAspect();
+
     }
     @Test
     void should_return_SubscriberNotFound_when_call_getSubscriberById() throws Exception {
@@ -221,8 +244,15 @@ public class SubscriberControllerTest {
         String content = mvcResult.getResponse().getContentAsString();
         assertEquals(SUBSCRIBER_NOT_FOUND, content);
 
+        TestLoggingAspect();
+
     }
     private Subscriber newSubscriber() {
         return new Subscriber(4L, "habip", "905015488363");
     }
+
+    private void TestLoggingAspect() {
+        assertThat(loggingAspect.isAspectCalled()).isTrue();
+    }
+
 }
