@@ -1,7 +1,7 @@
 subscriber:
         data:
           file:
-            path: classpath:data.json
+            path: ./data/data.json
           update:
             scheduler: 0 * * ? * *
 

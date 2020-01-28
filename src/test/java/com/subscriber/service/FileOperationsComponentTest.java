@@ -2,7 +2,6 @@ package com.subscriber.service;
 
 import com.subscriber.model.Subscriber;
 import com.subscriber.model.SubscribersList;
-import com.subscriber.service.FileOperationsComponent;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +31,7 @@ public class FileOperationsComponentTest {
         String filePath = fileOperationsComponent.getFilePath();
 
         //then:
-        assertThat(filePath).isEqualTo("classpath:data.json");
+        assertThat(filePath).isEqualTo("./data/data.json");
     }
 
     @Test
@@ -62,12 +61,6 @@ public class FileOperationsComponentTest {
     }
 
     private SubscribersList getMockSubscribersList() {
-        List<Subscriber> subscribers = new ArrayList<>();
-        subscribers.add(new Subscriber(1L, "Stephan King", "905552551122"));
-        subscribers.add(new Subscriber(2L, "Alice Gracy", "905552551133"));
-        subscribers.add(new Subscriber(3L, "Glory Wisdom", "905552551144"));
-        SubscribersList mockSubscribers = new SubscribersList();
-        mockSubscribers.setSubscribers(subscribers);
-        return mockSubscribers;
+        return (SubscribersList) fileOperationsComponent.writeToPojo(SubscribersList.class);
     }
 }

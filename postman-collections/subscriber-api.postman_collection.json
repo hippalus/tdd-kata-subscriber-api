@@ -1,0 +1,143 @@
+{
+	"info": {
+		"_postman_id": "888c6152-fd6e-4f3f-95bf-a1152190ccdf",
+		"name": "subscriber-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "saveSubscriber",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"id\": \"78\",\n      \"name\": \" Murtaza Kazan\",\n      \"msisdn\": \"05061659878\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/subscriber",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subscriber"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAllSubscribers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"title\":\"Hbbip\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/subscriber/getAllSubscribers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subscriber",
+						"getAllSubscribers"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteSubscriber",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/subscriber/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subscriber",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateSubscriber",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"id\": \"78\",\n      \"name\": \" Hidir Kazan\",\n      \"msisdn\": \"05061659878\"\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/subscriber",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subscriber"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSubscriberById",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/subscriber/getSubscriberById/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"subscriber",
+						"getSubscriberById",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

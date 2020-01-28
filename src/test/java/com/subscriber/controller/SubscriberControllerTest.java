@@ -1,13 +1,13 @@
 package com.subscriber.controller;
 
 import com.subscriber.aspect.LoggingAspect;
-import com.subscriber.controller.SubscriberController;
 import com.subscriber.model.Subscriber;
 import com.subscriber.model.SubscribersList;
 import com.subscriber.service.FileOperationsComponent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -22,9 +22,10 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.boot.test.context.SpringBootTest.*;
 
-@SpringBootTest
-@WebAppConfiguration
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
 public class SubscriberControllerTest {
 
     private static final String SUBSCRIBER_URI = "/subscriber";

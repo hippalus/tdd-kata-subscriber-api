@@ -1,10 +1,11 @@
 package com.subscriber.aspect;
 
-import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,8 +14,8 @@ import java.util.Arrays;
 
 @Aspect
 @Component
-@Slf4j
 public class LoggingAspect {
+    private static final Logger log=LoggerFactory.getLogger(LoggingAspect.class);
     //flag for test cases
     private boolean isAspectCalled;
 

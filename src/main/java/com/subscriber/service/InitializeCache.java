@@ -16,12 +16,14 @@ public class InitializeCache implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         SubscribersList subscribersList = (SubscribersList) fileOperationsComponent.writeToPojo(SubscribersList.class);
-        subscribersList.getSubscribers()
-                .stream()
-                .forEach(subscriber ->
-                        fileOperationsComponent
-                                .getCacheService()
-                                .addToCache(subscriber.getId(), subscriber));
+        if(subscribersList!=null) {
+            subscribersList.getSubscribers()
+                    .stream()
+                    .forEach(subscriber ->
+                            fileOperationsComponent
+                                    .getCacheService()
+                                    .addToCache(subscriber.getId(), subscriber));
+        }
 
     }
 }
