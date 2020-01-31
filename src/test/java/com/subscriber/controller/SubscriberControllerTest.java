@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -20,9 +19,9 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.boot.test.context.SpringBootTest.*;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -124,12 +123,18 @@ public class SubscriberControllerTest {
     void should_delete_subscriber_from_cache_and_return_200OK() throws Exception {
 
         //given
-        Subscriber subscriber =newSubscriber();
+        Subscriber subscriber = newSubscriber();
         fileOperationsComponent.getCacheService().addToCache(subscriber.getId(), subscriber);
-        String uri = "/subscriber/4";
+        String uri = "/subscriber";
+        DeleteRequest deleteRequest=new DeleteRequest();
+        deleteRequest.setId("4");
+        String requestBody = fileOperationsComponent.pojoToJson(deleteRequest);
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andReturn();
 
         //then
         int status = mvcResult.getResponse().getStatus();
@@ -143,11 +148,16 @@ public class SubscriberControllerTest {
     @Test
     void should_throw_SubscriberNotFoundException_if_subscriber_not_exist_in_cache_when_try_to_delete() throws Exception {
         //given
-        String uri = "/subscriber/1";
+        String uri = "/subscriber";
+        DeleteRequest deleteRequest = new DeleteRequest();
+        deleteRequest.setId("1");
+        String requestBody = fileOperationsComponent.pojoToJson(deleteRequest);
 
         //when
-        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
-
+        MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andReturn();
         //then
         int status = mvcResult.getResponse().getStatus();
         assertEquals(404, status);

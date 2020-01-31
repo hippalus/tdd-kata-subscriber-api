@@ -34,9 +34,9 @@ public class SubscriberController {
         return ResponseEntity.ok(subscriber);
     }
 
-    @RequestMapping(value = "/subscriber/{id}", method = DELETE)
-    public ResponseEntity<String> deleteSubscriber(@PathVariable("id") Long id) {
-        cacheService.deleteCache(id);
+    @RequestMapping(value = "/subscriber", method = DELETE)
+    public ResponseEntity<String> deleteSubscriber(@RequestBody DeleteRequest deleteRequest) {
+        cacheService.deleteCache(deleteRequest.getLongValue());
         return ResponseEntity.ok("Subscriber is deleted successfully");
     }
 

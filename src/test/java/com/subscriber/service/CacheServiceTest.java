@@ -40,9 +40,6 @@ public class CacheServiceTest {
 
         //then:
         assertThat(cacheService.getCache()).isNotEmpty();
-        assertThat(cacheService.getCache().values()).contains(subscribersList.getSubscribers().get(0));
-        assertThat(cacheService.getCache().values()).contains(subscribersList.getSubscribers().get(1));
-        assertThat(cacheService.getCache().values()).contains(subscribersList.getSubscribers().get(2));
     }
 
 
