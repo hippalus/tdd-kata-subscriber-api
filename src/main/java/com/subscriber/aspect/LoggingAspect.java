@@ -33,16 +33,21 @@ public class LoggingAspect {
         String[] url = requestMapping.value();
         RequestMethod[] methods = requestMapping.method();
 
-        log.info(String.format("%s %s %s", Arrays.toString(url), Arrays.toString(methods), Arrays.toString(args)));
+        if (log.isInfoEnabled()) {
+            log.info(String.format("%s %s %s", Arrays.toString(url), Arrays.toString(methods), Arrays.toString(args)));
+        }
+
         isAspectCalled = true;
     }
 
-    @Pointcut("execution(* com.subscriber.controller..*(..)))")
+    @Pointcut(value = "execution(* com.subscriber.controller..*(..)))")
     protected void controllerAllMethods() {
+        //DO NOTING
     }
 
-    @Pointcut("@annotation(requestMapping)")
+    @Pointcut(value = "@annotation(requestMapping)")
     protected void requestMappingPointCut(RequestMapping requestMapping) {
+        //DO NOTING
     }
 
 }
