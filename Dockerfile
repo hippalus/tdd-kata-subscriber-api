@@ -1,10 +1,11 @@
 FROM java:8
 
-CMD echo "Creating ./data folder..." && \
-    mkdir ./data
+CMD echo "Creating ./data folder..."
+RUN mkdir -p ~/data
+ADD /data /data
 
-CMD echo "Creating data.json dile..." && \
-        touch ./data/data.json
+CMD echo "Creating data.json dile..."
+RUN  touch /data/data.json
 
 ARG JAR_FILE
 
